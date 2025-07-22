@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TravelNow - Explore the World</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Add Three.js for 3D globe -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    body {
+      background-image: url('https://source.unsplash.com/1600x900/?travel,nature');
+      background-size: cover;
+      background-position: center;
+      backdrop-filter: none;
+    }
+    /* 3D Card Effect */
+    .card-3d {
+      perspective: 1200px;
+    }
+    .card-3d-inner {
+      transition: transform 0.5s cubic-bezier(.25,.8,.25,1);
+      transform-style: preserve-3d;
+    }
+    .card-3d:hover .card-3d-inner {
+      transform: rotateY(15deg) scale(1.07);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+    /* Globe canvas styling */
+    #globe-canvas {
+      position: absolute;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+    }
+    /* Parallax effect for overlay */
+    .parallax-bg {
+      will-change: transform;
+      transition: transform 0.3s cubic-bezier(.25,.8,.25,1);
+      background: linear-gradient(to bottom, rgba(20,20,30,0.7) 60%, rgba(20,20,30,0.85) 100%);
+    }
+    /* Dark glassmorphism for sections */
+    .dark-glass {
+      background: rgba(20,20,30,0.85);
+      color: #f3f4f6;
+      box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(4px);
+    }
+    .dark-glass input, .dark-glass textarea, .dark-glass select {
+      background: rgba(40,40,60,0.7);
+      color: #f3f4f6;
+      border: 1px solid #333;
+    }
+    .dark-glass input::placeholder, .dark-glass textarea::placeholder {
+      color: #b0b3b8;
+    }
+  </style>
+</head>
+<body class="h-screen overflow-x-hidden text-white">
+  <!-- Top Bar with Login Button and Navigation -->
+  <div class="fixed top-0 left-0 w-full flex justify-between items-center px-8 py-4 z-30 bg-gradient-to-b from-black/70 to-transparent">
+    <nav class="flex gap-6 items-center">
+      <a href="index.html" class="text-white font-semibold hover:text-yellow-300 transition border-b-2 border-yellow-300">Home</a>
+      <a href="about.html" class="text-white font-semibold hover:text-yellow-300 transition">About</a>
+      <a href="contact.html" class="text-white font-semibold hover:text-yellow-300 transition">Contact</a>
+      <a href="gallery.html" class="text-white font-semibold hover:text-yellow-300 transition">Gallery</a>
+      <a href="faq.html" class="text-white font-semibold hover:text-yellow-300 transition">FAQ</a>
+      <a href="booking.html" class="text-white font-semibold hover:text-yellow-300 transition">Booking</a>
+      <a href="payment.html" class="text-white font-semibold hover:text-yellow-300 transition">Payment</a>
+    </nav>
+    <button id="login-btn" class="bg-white text-blue-700 font-bold px-6 py-2 rounded-lg shadow hover:bg-blue-100 transition">Login</button>
+    <span id="user-welcome" class="ml-6 text-yellow-300 font-bold text-lg hidden"></span>
+  </div>
+  <!-- Login Modal -->
+  <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl shadow-2xl p-8 max-w-sm w-full relative">
+      <button id="close-login" class="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl">&times;</button>
+      <h2 class="text-2xl font-bold mb-4 text-center text-blue-700">Login</h2>
+      <input type="text" id="login-username" placeholder="Username or Email" class="w-full p-3 mb-4 border rounded-lg" />
+      <input type="password" id="login-password" placeholder="Password" class="w-full p-3 mb-4 border rounded-lg" />
+      <div id="login-error" class="text-red-500 text-sm mb-2 hidden"></div>
+      <button id="login-submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg font-semibold">Sign In</button>
+    </div>
+  </div>
+  <!-- 3D Globe Canvas -->
+  <div id="globe-canvas"></div>
+  <!-- Overlay for darkening background -->
+  <div class="absolute inset-0 bg-black bg-opacity-60 z-0 parallax-bg"></div>
+  <main class="relative z-10 flex flex-col min-h-screen justify-between">
+    <!-- Hero Section with 3D Globe -->
+    <section id="hero-section" class="flex flex-col items-center justify-center min-h-[60vh] relative dark-glass mt-16">
+      <h1 class="text-6xl font-extrabold drop-shadow-lg text-center mt-16">🌍 Welcome to TravelNow</h1>
+      <p class="text-2xl mt-4 text-gray-200 text-center max-w-2xl">Your trusted partner for unforgettable journeys</p>
+      <button id="get-started-btn" class="mt-10 bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-bold px-8 py-4 rounded-xl shadow-lg text-xl transition">Get Started</button>
+    </section>
+    <!-- Verification Section (hidden initially) -->
+    <section id="verify-section" class="hidden dark-glass mx-auto max-w-md p-8 rounded-xl shadow-2xl z-10 mt-24">
+      <h2 class="text-2xl font-semibold mb-4 text-center">Verify to Begin</h2>
+      <input id="name" type="text" placeholder="Your Name" class="p-3 border w-full mb-4 rounded-lg" />
+      <input id="email" type="email" placeholder="Your Email" class="p-3 border w-full mb-4 rounded-lg" />
+      <div id="verify-error" class="text-red-500 text-sm mb-2 hidden"></div>
+      <button onclick="verifyUser()" class="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg font-semibold">
+        Enter Destination
+      </button>
+    </section>
+
+    <!-- Tours Section -->
+    <section id="tour-section" class="hidden px-6 py-10">
+      <h2 class="text-4xl font-bold text-center mb-6 text-yellow-300">Featured Destinations</h2>
+
+      <!-- Filters -->
+      <div class="flex flex-wrap justify-center gap-4 mb-6">
+        <button onclick="filterTours('All')" class="bg-white bg-opacity-20 hover:bg-opacity-40 px-4 py-2 rounded text-white font-semibold">All</button>
+        <button onclick="filterTours('Beach')" class="bg-blue-400 hover:bg-blue-500 px-4 py-2 rounded font-semibold">Beach</button>
+        <button onclick="filterTours('Mountain')" class="bg-green-400 hover:bg-green-500 px-4 py-2 rounded font-semibold">Mountain</button>
+        <button onclick="filterTours('City')" class="bg-yellow-400 hover:bg-yellow-500 px-4 py-2 rounded font-semibold">City</button>
+      </div>
+
+      <!-- Tour Cards -->
+      <div id="tours" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+
+      <!-- Testimonials -->
+      <div class="bg-white bg-opacity-80 text-gray-900 mt-12 p-6 rounded-lg shadow-lg max-w-5xl mx-auto">
+        <h2 class="text-2xl font-bold text-center mb-4">🗣 Customer Feedback</h2>
+        <div class="space-y-4">
+          <blockquote class="bg-gray-100 p-4 rounded shadow-md">
+            <p>"We booked a tour to Goa through TravelNow and it was simply the best vacation we've had!"</p>
+            <footer class="text-right font-semibold mt-2">–madhavan</footer>
+          </blockquote>
+          <blockquote class="bg-gray-100 p-4 rounded shadow-md">
+            <p>"Excellent support and perfect itinerary for Manali. Totally recommend!"</p>
+            <footer class="text-right font-semibold mt-2">– Abhishek R.</footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center text-sm text-gray-300 py-4">
+      © 2025 TravelNow. All rights reserved.
+    </footer>
+
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+  // Login Modal Validation
+  document.getElementById('login-submit').addEventListener('click', function(e) {
+    const username = document.getElementById('login-username').value.trim();
+    const password = document.getElementById('login-password').value.trim();
+    const errorDiv = document.getElementById('login-error');
+    let error = '';
+    if (!username) error = 'Please enter your username or email.';
+    else if (!password) error = 'Please enter your password.';
+    if (error) {
+      e.preventDefault();
+      errorDiv.textContent = error;
+      errorDiv.classList.remove('hidden');
+    } else {
+      errorDiv.classList.add('hidden');
+      // Show welcome message and verification section, hide login modal
+      document.getElementById('login-modal').classList.add('hidden');
+      document.getElementById('verify-section').classList.remove('hidden');
+      var welcome = document.getElementById('user-welcome');
+      welcome.textContent = 'Welcome, ' + username + ' (Password: ' + password + ')!';
+      welcome.classList.remove('hidden');
+      alert('Your login information has been saved!');
+    }
+  });
+  // Welcome to Login transition
+  document.getElementById('get-started-btn').addEventListener('click', function() {
+    document.getElementById('hero-section').classList.add('hidden');
+    document.getElementById('login-modal').classList.remove('hidden');
+  });
+  // Verification Section Validation
+  function verifyUser() {
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const errorDiv = document.getElementById('verify-error');
+    let error = '';
+    if (!name) error = 'Please enter your name.';
+    else if (!/^\S+@\S+\.\S+$/.test(email)) error = 'Please enter a valid email address.';
+    if (error) {
+      errorDiv.textContent = error;
+      errorDiv.classList.remove('hidden');
+      return;
+    } else {
+      errorDiv.classList.add('hidden');
+    }
+    document.getElementById("verify-section").style.display = "none";
+    document.getElementById("tour-section").classList.remove("hidden");
+    loadTours("All");
+  }
+  </script>
+</body>
+</html>

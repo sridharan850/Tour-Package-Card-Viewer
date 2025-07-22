@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FAQ - TravelNow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    body {
+      background-image: url('https://source.unsplash.com/1600x900/?travel,nature');
+      background-size: cover;
+      background-position: center;
+      backdrop-filter: none;
+    }
+    .parallax-bg {
+      background: linear-gradient(to bottom, rgba(20,20,30,0.7) 60%, rgba(20,20,30,0.85) 100%);
+    }
+    .dark-glass {
+      background: rgba(20,20,30,0.85);
+      color: #f3f4f6;
+      box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(4px);
+    }
+    .dark-glass input, .dark-glass textarea, .dark-glass select {
+      background: rgba(40,40,60,0.7);
+      color: #f3f4f6;
+      border: 1px solid #333;
+    }
+    .dark-glass input::placeholder, .dark-glass textarea::placeholder {
+      color: #b0b3b8;
+    }
+    /* 3D Card Effect for FAQ */
+    .faq-3d {
+      perspective: 1200px;
+    }
+    .faq-3d-inner {
+      transition: transform 0.5s cubic-bezier(.25,.8,.25,1), box-shadow 0.5s;
+      transform-style: preserve-3d;
+      opacity: 0;
+      transform: translateY(40px) scale(0.97);
+    }
+    .faq-3d:hover .faq-3d-inner {
+      transform: rotateY(8deg) scale(1.03);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+    .faq-3d-inner.visible {
+      opacity: 1;
+      transform: none;
+    }
+    /* 3D Question Mark Canvas */
+    #faq-3d-canvas {
+      width: 100%;
+      height: 120px;
+      margin-bottom: 1.5rem;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body class="h-screen overflow-x-hidden text-white">
+  <!-- Top Bar with Navigation -->
+  <div class="fixed top-0 left-0 w-full flex justify-between items-center px-8 py-4 z-30 bg-gradient-to-b from-black/70 to-transparent">
+    <nav class="flex gap-6 items-center">
+      <a href="index.html" class="text-white font-semibold hover:text-yellow-300 transition">Home</a>
+      <a href="about.html" class="text-white font-semibold hover:text-yellow-300 transition">About</a>
+      <a href="contact.html" class="text-white font-semibold hover:text-yellow-300 transition">Contact</a>
+      <a href="gallery.html" class="text-white font-semibold hover:text-yellow-300 transition">Gallery</a>
+      <a href="faq.html" class="text-white font-semibold hover:text-yellow-300 transition border-b-2 border-yellow-300">FAQ</a>
+    </nav>
+  </div>
+  <main class="relative z-10 flex flex-col min-h-screen justify-center items-center pt-32">
+    <div id="faq-3d-canvas"></div>
+    <section class="text-center max-w-2xl mx-auto dark-glass p-10 rounded-xl shadow-2xl">
+      <h1 class="text-5xl font-bold mb-8">Frequently Asked Questions</h1>
+      <div class="text-left space-y-6">
+        <div class="faq-3d"><div class="faq-3d-inner">
+          <h2 class="text-xl font-semibold text-yellow-300">How do I book a tour?</h2>
+          <p class="text-lg">Simply browse our featured destinations, select your preferred package, and click "Book Now". You can also contact us for custom itineraries.</p>
+        </div></div>
+        <div class="faq-3d"><div class="faq-3d-inner">
+          <h2 class="text-xl font-semibold text-yellow-300">Is my payment secure?</h2>
+          <p class="text-lg">Yes, we use trusted payment gateways to ensure your transactions are safe and secure.</p>
+        </div></div>
+        <div class="faq-3d"><div class="faq-3d-inner">
+          <h2 class="text-xl font-semibold text-yellow-300">Can I customize my travel package?</h2>
+          <p class="text-lg">Absolutely! Contact our support team to tailor your trip to your preferences.</p>
+        </div></div>
+        <div class="faq-3d"><div class="faq-3d-inner">
+          <h2 class="text-xl font-semibold text-yellow-300">What if I need to cancel?</h2>
+          <p class="text-lg">We offer flexible cancellation policies. Please refer to our terms or contact us for details.</p>
+        </div></div>
+        <div class="faq-3d"><div class="faq-3d-inner">
+          <h2 class="text-xl font-semibold text-yellow-300">What should I pack for my trip?</h2>
+          <p class="text-lg">We recommend packing according to your destination's climate. Essentials include travel documents, comfortable clothing, personal medication, and chargers. We'll send you a detailed checklist after booking.</p>
+        </div></div>
+        <div class="faq-3d"><div class="faq-3d-inner">
+          <h2 class="text-xl font-semibold text-yellow-300">How do I get help during my trip?</h2>
+          <p class="text-lg">Our 24/7 customer support is always available. You can call, email, or use our app chat for immediate assistance, no matter where you are.</p>
+        </div></div>
+        <div class="faq-3d"><div class="faq-3d-inner">
+          <h2 class="text-xl font-semibold text-yellow-300">What if I lose my booking confirmation?</h2>
+          <p class="text-lg">No worries! Just log in to your account or contact our support team. We'll resend your booking details right away.</p>
+        </div></div>
+        <div class="faq-3d"><div class="faq-3d-inner">
+          <h2 class="text-xl font-semibold text-yellow-300">Can I pay in installments?</h2>
+          <p class="text-lg">Yes, we offer easy installment plans for select packages. Please check the payment page or contact us for more details.</p>
+        </div></div>
+        <div class="faq-3d"><div class="faq-3d-inner">
+          <h2 class="text-xl font-semibold text-yellow-300">What happens in case of a travel emergency?</h2>
+          <p class="text-lg">Your safety is our priority. We provide emergency contact numbers, local support, and can help with rebooking, medical assistance, or travel changes as needed.</p>
+        </div></div>
+        <div class="faq-3d"><div class="faq-3d-inner">
+          <h2 class="text-xl font-semibold text-yellow-300">How do I get a refund?</h2>
+          <p class="text-lg">Refunds are processed according to our cancellation policy. Contact our support team with your booking details, and we'll guide you through the process.</p>
+        </div></div>
+      </div>
+    </section>
+  </main>
+  <footer class="text-center text-sm text-gray-300 py-4 mt-10">
+    © 2025 TravelNow. All rights reserved.
+  </footer>
+  <script>
+    // 3D FAQ Card Entrance Animation
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.faq-3d-inner').forEach((el, idx) => {
+        setTimeout(() => {
+          el.classList.add('visible');
+        }, idx * 120);
+      });
+      // 3D Question Mark Animation
+      const canvas = document.getElementById('faq-3d-canvas');
+      if (canvas && window.THREE) {
+        const width = canvas.offsetWidth;
+        const height = canvas.offsetHeight;
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(width, height);
+        canvas.appendChild(renderer.domElement);
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000);
+        camera.position.z = 4;
+        // 3D Question Mark Shape
+        const fontLoader = new THREE.FontLoader();
+        fontLoader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function(font) {
+          const textGeo = new THREE.TextGeometry('?', {
+            font: font,
+            size: 2,
+            height: 0.4,
+            curveSegments: 12,
+            bevelEnabled: true,
+            bevelThickness: 0.1,
+            bevelSize: 0.08,
+            bevelOffset: 0,
+            bevelSegments: 5
+          });
+          const material = new THREE.MeshStandardMaterial({ color: 0xffd600, metalness: 0.6, roughness: 0.3 });
+          const mesh = new THREE.Mesh(textGeo, material);
+          mesh.position.x = -0.7;
+          mesh.position.y = -0.7;
+          scene.add(mesh);
+          // Light
+          const light = new THREE.PointLight(0xffffff, 1, 100);
+          light.position.set(5, 5, 5);
+          scene.add(light);
+          // Animate
+          function animate() {
+            requestAnimationFrame(animate);
+            mesh.rotation.y += 0.01;
+            mesh.rotation.x += 0.003;
+            renderer.render(scene, camera);
+          }
+          animate();
+        });
+        // Responsive
+        window.addEventListener('resize', () => {
+          const w = canvas.offsetWidth;
+          const h = canvas.offsetHeight;
+          renderer.setSize(w, h);
+          camera.aspect = w / h;
+          camera.updateProjectionMatrix();
+        });
+      }
+    });
+  </script>
+</body>
+</html> 

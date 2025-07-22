@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Booking - TravelNow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-image: url('https://source.unsplash.com/1600x900/?travel,nature');
+      background-size: cover;
+      background-position: center;
+      backdrop-filter: none;
+    }
+    .parallax-bg {
+      background: linear-gradient(to bottom, rgba(20,20,30,0.7) 60%, rgba(20,20,30,0.85) 100%);
+    }
+    .dark-glass {
+      background: rgba(20,20,30,0.85);
+      color: #f3f4f6;
+      box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(4px);
+    }
+    .dark-glass input, .dark-glass textarea, .dark-glass select {
+      background: rgba(40,40,60,0.7);
+      color: #f3f4f6;
+      border: 1px solid #333;
+    }
+    .dark-glass input::placeholder, .dark-glass textarea::placeholder {
+      color: #b0b3b8;
+    }
+  </style>
+</head>
+<body class="h-screen overflow-x-hidden text-white">
+  <!-- Top Bar with Navigation -->
+  <div class="fixed top-0 left-0 w-full flex justify-between items-center px-8 py-4 z-30 bg-gradient-to-b from-black/70 to-transparent">
+    <nav class="flex gap-6 items-center">
+      <a href="index.html" class="text-white font-semibold hover:text-yellow-300 transition">Home</a>
+      <a href="about.html" class="text-white font-semibold hover:text-yellow-300 transition">About</a>
+      <a href="contact.html" class="text-white font-semibold hover:text-yellow-300 transition">Contact</a>
+      <a href="gallery.html" class="text-white font-semibold hover:text-yellow-300 transition">Gallery</a>
+      <a href="faq.html" class="text-white font-semibold hover:text-yellow-300 transition">FAQ</a>
+      <a href="booking.html" class="text-white font-semibold hover:text-yellow-300 transition border-b-2 border-yellow-300">Booking</a>
+      <a href="payment.html" class="text-white font-semibold hover:text-yellow-300 transition">Payment</a>
+    </nav>
+  </div>
+  <main class="relative z-10 flex flex-col min-h-screen justify-center items-center pt-32">
+    <section class="text-center max-w-lg mx-auto dark-glass p-10 rounded-xl shadow-2xl">
+      <h1 class="text-5xl font-bold mb-4">Book Your Tour</h1>
+      <form id="booking-form" class="space-y-5 mt-6">
+        <input type="text" id="booking-name" placeholder="Your Name" class="w-full p-3 rounded-lg border" required />
+        <input type="email" id="booking-email" placeholder="Your Email" class="w-full p-3 rounded-lg border" required />
+        <input type="tel" id="booking-phone" placeholder="Your Phone" class="w-full p-3 rounded-lg border" required />
+        <select id="booking-destination" class="w-full p-3 rounded-lg border" required>
+          <option value="">Select Destination</option>
+          <option>Goa Beach Paradise</option>
+          <option>Manali Mountain Adventure</option>
+          <option>Mumbai City Lights</option>
+          <option>Kerala Backwater Cruise</option>
+          <option>Shimla Snow Escape</option>
+          <option>Jaipur Heritage Tour</option>
+        </select>
+        <input type="number" id="booking-people" placeholder="Number of People" class="w-full p-3 rounded-lg border" min="1" required />
+        <input type="date" id="booking-date" class="w-full p-3 rounded-lg border" required />
+        <div id="booking-error" class="text-red-400 text-left text-sm hidden"></div>
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg font-semibold">Book Now</button>
+      </form>
+    </section>
+  </main>
+  <footer class="text-center text-sm text-gray-300 py-4 mt-10">
+    © 2025 TravelNow. All rights reserved.
+  </footer>
+  <script>
+    document.getElementById('booking-form').addEventListener('submit', function(e) {
+      const name = document.getElementById('booking-name').value.trim();
+      const email = document.getElementById('booking-email').value.trim();
+      const phone = document.getElementById('booking-phone').value.trim();
+      const dest = document.getElementById('booking-destination').value;
+      const people = document.getElementById('booking-people').value;
+      const date = document.getElementById('booking-date').value;
+      const errorDiv = document.getElementById('booking-error');
+      let error = '';
+      if (!name) error = 'Please enter your name.';
+      else if (!/^\S+@\S+\.\S+$/.test(email)) error = 'Please enter a valid email address.';
+      else if (!/^\d{10}$/.test(phone.replace(/\D/g, ''))) error = 'Please enter a valid 10-digit phone number.';
+      else if (!dest) error = 'Please select a destination.';
+      else if (!people || people < 1) error = 'Please enter the number of people.';
+      else if (!date) error = 'Please select a travel date.';
+      if (error) {
+        e.preventDefault();
+        errorDiv.textContent = error;
+        errorDiv.classList.remove('hidden');
+      } else {
+        errorDiv.classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+</html> 

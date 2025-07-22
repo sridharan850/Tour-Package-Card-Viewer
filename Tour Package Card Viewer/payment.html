@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment - TravelNow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-image: url('https://source.unsplash.com/1600x900/?travel,nature');
+      background-size: cover;
+      background-position: center;
+      backdrop-filter: none;
+    }
+    .parallax-bg {
+      background: linear-gradient(to bottom, rgba(20,20,30,0.7) 60%, rgba(20,20,30,0.85) 100%);
+    }
+    .dark-glass {
+      background: rgba(20,20,30,0.85);
+      color: #f3f4f6;
+      box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(4px);
+    }
+    .dark-glass input, .dark-glass textarea, .dark-glass select {
+      background: rgba(40,40,60,0.7);
+      color: #f3f4f6;
+      border: 1px solid #333;
+    }
+    .dark-glass input::placeholder, .dark-glass textarea::placeholder {
+      color: #b0b3b8;
+    }
+  </style>
+</head>
+<body class="h-screen overflow-x-hidden text-white">
+  <!-- Top Bar with Navigation -->
+  <div class="fixed top-0 left-0 w-full flex justify-between items-center px-8 py-4 z-30 bg-gradient-to-b from-black/70 to-transparent">
+    <nav class="flex gap-6 items-center">
+      <a href="index.html" class="text-white font-semibold hover:text-yellow-300 transition">Home</a>
+      <a href="about.html" class="text-white font-semibold hover:text-yellow-300 transition">About</a>
+      <a href="contact.html" class="text-white font-semibold hover:text-yellow-300 transition">Contact</a>
+      <a href="gallery.html" class="text-white font-semibold hover:text-yellow-300 transition">Gallery</a>
+      <a href="faq.html" class="text-white font-semibold hover:text-yellow-300 transition">FAQ</a>
+      <a href="booking.html" class="text-white font-semibold hover:text-yellow-300 transition">Booking</a>
+      <a href="payment.html" class="text-white font-semibold hover:text-yellow-300 transition border-b-2 border-yellow-300">Payment</a>
+    </nav>
+  </div>
+  <main class="relative z-10 flex flex-col min-h-screen justify-center items-center pt-32">
+    <section class="text-center max-w-lg mx-auto dark-glass p-10 rounded-xl shadow-2xl">
+      <h1 class="text-5xl font-bold mb-4">Payment</h1>
+      <form id="payment-form" class="space-y-5 mt-6">
+        <input type="text" id="card-name" placeholder="Cardholder Name" class="w-full p-3 rounded-lg border" required />
+        <input type="text" id="card-number" placeholder="Card Number" maxlength="19" class="w-full p-3 rounded-lg border" required />
+        <div class="flex gap-4">
+          <input type="text" id="card-expiry" placeholder="MM/YY" maxlength="5" class="w-1/2 p-3 rounded-lg border" required />
+          <input type="text" id="card-cvv" placeholder="CVV" maxlength="3" class="w-1/2 p-3 rounded-lg border" required />
+        </div>
+        <input type="number" id="card-amount" placeholder="Amount" min="1" class="w-full p-3 rounded-lg border" required />
+        <div id="payment-error" class="text-red-400 text-left text-sm hidden"></div>
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg font-semibold">Pay Now</button>
+      </form>
+    </section>
+  </main>
+  <footer class="text-center text-sm text-gray-300 py-4 mt-10">
+    © 2025 TravelNow. All rights reserved.
+  </footer>
+  <script>
+    document.getElementById('payment-form').addEventListener('submit', function(e) {
+      const name = document.getElementById('card-name').value.trim();
+      const number = document.getElementById('card-number').value.replace(/\s+/g, '');
+      const expiry = document.getElementById('card-expiry').value.trim();
+      const cvv = document.getElementById('card-cvv').value.trim();
+      const amount = document.getElementById('card-amount').value;
+      const errorDiv = document.getElementById('payment-error');
+      let error = '';
+      if (!name) error = 'Please enter the cardholder name.';
+      else if (!/^\d{16}$/.test(number)) error = 'Please enter a valid 16-digit card number.';
+      else if (!/^\d{2}\/\d{2}$/.test(expiry)) error = 'Expiry must be in MM/YY format.';
+      else {
+        const [mm, yy] = expiry.split('/').map(Number);
+        const now = new Date();
+        const expDate = new Date(2000 + yy, mm);
+        if (mm < 1 || mm > 12 || expDate < now) error = 'Card expiry must be a valid future date.';
+      }
+      if (!error && !/^\d{3}$/.test(cvv)) error = 'Please enter a valid 3-digit CVV.';
+      else if (!error && (!amount || amount <= 0)) error = 'Please enter a valid amount.';
+      if (error) {
+        e.preventDefault();
+        errorDiv.textContent = error;
+        errorDiv.classList.remove('hidden');
+      } else {
+        errorDiv.classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+</html> 

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About - TravelNow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-image: url('https://source.unsplash.com/1600x900/?travel,nature');
+      background-size: cover;
+      background-position: center;
+      backdrop-filter: none;
+    }
+    .parallax-bg {
+      background: linear-gradient(to bottom, rgba(20,20,30,0.7) 60%, rgba(20,20,30,0.85) 100%);
+    }
+    .dark-glass {
+      background: rgba(20,20,30,0.85);
+      color: #f3f4f6;
+      box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(4px);
+    }
+    .dark-glass input, .dark-glass textarea, .dark-glass select {
+      background: rgba(40,40,60,0.7);
+      color: #f3f4f6;
+      border: 1px solid #333;
+    }
+    .dark-glass input::placeholder, .dark-glass textarea::placeholder {
+      color: #b0b3b8;
+    }
+  </style>
+</head>
+<body class="h-screen overflow-x-hidden text-white">
+  <!-- Top Bar with Navigation -->
+  <div class="fixed top-0 left-0 w-full flex justify-between items-center px-8 py-4 z-30 bg-gradient-to-b from-black/70 to-transparent">
+    <nav class="flex gap-6 items-center">
+      <a href="index.html" class="text-white font-semibold hover:text-yellow-300 transition">Home</a>
+      <a href="about.html" class="text-white font-semibold hover:text-yellow-300 transition border-b-2 border-yellow-300">About</a>
+      <a href="contact.html" class="text-white font-semibold hover:text-yellow-300 transition">Contact</a>
+      <a href="gallery.html" class="text-white font-semibold hover:text-yellow-300 transition">Gallery</a>
+      <a href="faq.html" class="text-white font-semibold hover:text-yellow-300 transition">FAQ</a>
+    </nav>
+  </div>
+  <main class="relative z-10 flex flex-col min-h-screen justify-center items-center pt-32">
+    <section class="text-center max-w-2xl mx-auto dark-glass p-10 rounded-xl shadow-2xl">
+      <h1 class="text-5xl font-bold mb-4">About TravelNow</h1>
+      <p class="text-lg mb-6">TravelNow is your trusted partner for unforgettable journeys. We curate the best travel experiences, from exotic beaches to majestic mountains and vibrant cities. Our mission is to make travel easy, safe, and memorable for everyone.</p>
+      <div class="mb-8">
+        <h2 class="text-2xl font-semibold mb-2">🌟 Our Story</h2>
+        <p class="text-base mb-4">Founded by passionate travelers, TravelNow began as a small group of friends who wanted to share the joy of discovery with the world. Over the years, we've grown into a leading travel company, helping thousands of explorers find their dream destinations and create lifelong memories.</p>
+      </div>
+      <div class="mb-8">
+        <h2 class="text-2xl font-semibold mb-2">🎯 Mission & Vision</h2>
+        <ul class="text-left text-base list-disc list-inside space-y-2">
+          <li><span class="font-bold">Mission:</span> To make travel accessible, safe, and inspiring for everyone, everywhere.</li>
+          <li><span class="font-bold">Vision:</span> To be the most loved and trusted travel partner, connecting people to the wonders of the world.</li>
+        </ul>
+      </div>
+      <div class="mb-8">
+        <h2 class="text-2xl font-semibold mb-2">💡 Our Values</h2>
+        <ul class="text-left text-base list-disc list-inside space-y-2">
+          <li>Customer First: Your happiness is our top priority.</li>
+          <li>Integrity: We believe in honest, transparent service.</li>
+          <li>Adventure: We encourage curiosity and bold exploration.</li>
+          <li>Sustainability: We promote responsible and eco-friendly travel.</li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="text-2xl font-semibold mb-2">🤝 Meet Our Team</h2>
+        <p class="text-base mb-2">Our team is made up of travel experts, local guides, and customer care professionals who are passionate about making your journey unforgettable. We work around the clock to ensure every detail is perfect, so you can focus on enjoying your adventure.</p>
+        <ul class="flex flex-wrap justify-center gap-6 mt-4">
+          <li class="flex flex-col items-center"><span class="text-3xl">👩‍💼</span><span class="mt-1">Priya (Founder)</span></li>
+          <li class="flex flex-col items-center"><span class="text-3xl">🧑‍💻</span><span class="mt-1">Rahul (Tech Lead)</span></li>
+          <li class="flex flex-col items-center"><span class="text-3xl">🧳</span><span class="mt-1">Anita (Travel Expert)</span></li>
+          <li class="flex flex-col items-center"><span class="text-3xl">🌏</span><span class="mt-1">Sanjay (Guide)</span></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+  <footer class="text-center text-sm text-gray-300 py-4 mt-10">
+    © 2025 TravelNow. All rights reserved.
+  </footer>
+</body>
+</html> 
