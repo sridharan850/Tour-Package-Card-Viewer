@@ -21,18 +21,3 @@ Built with: HTML, Tailwind CSS, JavaScript, and visual enhancements using Three.
 
 📡 Future Support for Weather & Traffic Integration
 
-📁 Project Structure
-bash
-Copy
-Edit
-TravelNow/
-├── index.html         # Main homepage
-├── about.html         # Company information
-├── contact.html       # (To be added) Contact form page
-├── faq.html           # FAQ section
-├── gallery.html       # Travel gallery
-├── booking.html       # (To be added) Tour booking interface
-├── payment.html       # Payment form
-├── script.js          # All JavaScript logic
-├── style.css          # (Optional if used) Extra styling
-└── README.md          # Project info and setup guide
